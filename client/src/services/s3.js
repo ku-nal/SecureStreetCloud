@@ -76,9 +76,6 @@
 // export default S3;
 
 const AWS = require('aws-sdk');
-const StatusCodes = require('http-status-codes');
-const SuccessResponse = require('../utils/common/successResponse');
-const ErrorResponse = require('../utils/common/errorResponse');
 
 // Function to retrieve credentials from AWS Secrets Manager
 async function getAWSCredentials() {
@@ -132,7 +129,6 @@ let S3;
         console.log('Buckets:', data.Buckets);
     } catch (error) {
         console.error('Error initializing or using S3 client:', error.message);
-        process.exit(1); // Exit process if S3 initialization or usage fails
     }
 })();
 
