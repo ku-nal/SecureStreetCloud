@@ -100,7 +100,7 @@ async function getAWSCredentials() {
 async function initializeS3() {
     try {
         const credentials = await getAWSCredentials();
-
+        
         const S3 = new AWS.S3({
             accessKeyId: credentials.accessKeyId,
             secretAccessKey: credentials.secretAccessKey,
@@ -118,11 +118,9 @@ async function initializeS3() {
 }
 
 // Initialize S3 client and test it
-let S3;
-
 (async () => {
     try {
-        S3 = await initializeS3(); // Ensure S3 client is configured before using it
+        const S3 = await initializeS3(); // Ensure S3 client is configured before using it
 
         // Test S3 client by listing buckets
         const data = await S3.listBuckets().promise();
@@ -131,6 +129,3 @@ let S3;
         console.error('Error initializing or using S3 client:', error.message);
     }
 })();
-
-module.exports = S3;
-
