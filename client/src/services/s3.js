@@ -1,16 +1,54 @@
 import AWS from 'aws-sdk';
 
-// Configure AWS SDK to use the default region and log output
-AWS.config.update({
-    region: 'us-east-1',
-    logger: console,
-});
+// Function to retrieve credentials from AWS Secrets Manager
+async function getAWSCredentials() {
+    const secretsManager = new AWS.SecretsManager({
+        region: 'us-east-1',
+    });
 
-// Initialize S3 client
-const S3 = new AWS.S3();
+    const params = {
+        SecretId: 'crimemanagement/secret', // Replace with your secret name
+    };
 
-// Log a message indicating successful initialization
-console.log('Successfully initialized S3 client');
+    try {
+        const secret = await secretsManager.getSecretValue(params).promise();
+        return JSON.parse(secret.SecretString);
+    } catch (error) {
+        console.error('Failed to retrieve AWS credentials:', error.message);
+        throw error; // Re-throw error for proper error handling
+    }
+}
 
-// Export the S3 client
+// Initialize S3 client with credentials from Secrets Manager
+async function initializeS3() {
+    try {
+        const credentials = await getAWSCredentials();
+
+        const S3 = new AWS.S3({
+            accessKeyId: credentials.accessKeyId,
+            secretAccessKey: credentials.secretAccessKey,
+            sessionToken: credentials.sessionToken,
+            region: 'us-east-1',
+        });
+
+        console.log('Successfully initialized S3 client');
+        return S3;
+    } catch (error) {
+        console.error('Error initializing S3 client:', error.message);
+        throw error; // Re-throw error for proper error handling
+    }
+}
+
+// Initialize S3 client and export
+let S3;
+
+(async () => {
+    try {
+        S3 = await initializeS3();
+    } catch (error) {
+        console.error('Error initializing S3 client:', error.message);
+        process.exit(1); // Exit process if S3 initialization fails
+    }
+})();
+
 export default S3;
