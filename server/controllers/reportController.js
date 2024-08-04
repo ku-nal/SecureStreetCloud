@@ -78,13 +78,13 @@ const StatusCodes = require('http-status-codes');
 const SuccessResponse = require('../utils/common/successResponse');
 const ErrorResponse = require('../utils/common/errorResponse');
 
-// AWS.config.update({
-//     region: 'us-east-1',
-//     accessKeyId: "ASIAQL6BZ5JNHB2UQPPU",
-//     secretAccessKey: "/Mvxm4p8bGXrs7zIHMAd0X4Fq0oqhL8AmkZH6XZF",
-//     sessionToken: "IQoJb3JpZ2luX2VjEML//////////wEaCXVzLXdlc3QtMiJHMEUCIQCnf7KdJuf9HRmZWRzs0ugiyjPgl+eP8O8pKGGozGORGgIgKcEjzFJzIGYUQ8rR5Ef2FTUSAVMJUG2e8XjKkLQBA2IqsAIIq///////////ARAAGgwwMjU2MzkzODE1OTQiDAc/5KcJj15vkkyNQSqEAveVnySfOrBRKixLinhZe0RWUEUmFHVSR75XlkrA7G3ARi2yvoeycpjeXhWW0hL82qU90Fqpn34UHtr9PahNvnl9jyZML9wwhdubCZyWHVHaySng/OC8TYoBPRPUaECFfYtaOv95ls2qRsdR9TWJxY1xfWb7Q7o/aksdPqe6KN5CN05LYzJ4SVK+VtLImnYAl6VN2wcyNbR4uAj4ZdK6Dfh7WXQpNfo7ey3jetpvYneSwcF0ocx8b6X8zvX8KFgZdPEi5Z3hvQkCNP8ok9TFlfobUx9n59eGinD5fIGIzjKkF8jkm1TEq2HDzqUyKcnlgUHobeN346pDd8ltWk3N6TlWM9FVMMveubUGOp0BDilshPLwL/WyRgnljdhYDEsNZdcDmPl6trgjHjLAji4V13XmqmgeV0QPajOe9oX3T8nM54+aH93nFQxfbRvhcZ6VUwonAltagqJR7LggiDwzpW7ArVsuGsE3DE/3cK8Xo0X2fJXMrqpMJ15lwK4rZX+HcH2mcDcQEFK9e4PFSo45TbgXbLFQOUbPhnrLyROivdfJxtKFrHefnigWfg==",
-//     logger: console
-// });
+AWS.config.update({
+    region: 'us-east-1',
+    accessKeyId: "",
+    secretAccessKey: "",
+    sessionToken: "",
+    logger: console
+});
 
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
