@@ -8,6 +8,8 @@ const uploadFile = async (fileName, bucketName, fileContent) => {
       Body: fileContent,
     };
 
+    console.log(S3);
+
     S3.upload(params, (err, data) => {
       if (err) {
         console.error("Error uploading file:", err);

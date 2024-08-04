@@ -63,4 +63,14 @@ const S3 = new AWS.S3({
 
 console.log('Successfully initialized S3 client');
 
+// Test S3 client with a basic operation
+(async () => {
+    try {
+        const data = await S3.listBuckets().promise();
+        console.log('Buckets:', data.Buckets);
+    } catch (error) {
+        console.error('Error listing buckets:', error.message);
+    }
+})();
+
 export default S3;
