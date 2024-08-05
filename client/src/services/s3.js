@@ -75,57 +75,67 @@
 
 // export default S3;
 
-const AWS = require('aws-sdk');
+// const AWS = require('aws-sdk');
 
-// Function to retrieve credentials from AWS Secrets Manager
-async function getAWSCredentials() {
-    const secretsManager = new AWS.SecretsManager({
-        region: 'us-east-1',
-    });
+// // Function to retrieve credentials from AWS Secrets Manager
+// async function getAWSCredentials() {
+//     const secretsManager = new AWS.SecretsManager({
+//         region: 'us-east-1',
+//     });
 
-    const params = {
-        SecretId: 'crimemanagement/secret', // Replace with your secret name
-    };
+//     const params = {
+//         SecretId: 'crimemanagement/secret', // Replace with your secret name
+//     };
 
-    try {
-        const secret = await secretsManager.getSecretValue(params).promise();
-        return JSON.parse(secret.SecretString);
-    } catch (error) {
-        console.error('Failed to retrieve AWS credentials:', error.message);
-        throw error; // Re-throw error for proper error handling
-    }
-}
+//     try {
+//         const secret = await secretsManager.getSecretValue(params).promise();
+//         return JSON.parse(secret.SecretString);
+//     } catch (error) {
+//         console.error('Failed to retrieve AWS credentials:', error.message);
+//         throw error; // Re-throw error for proper error handling
+//     }
+// }
 
-// Initialize S3 client with credentials from Secrets Manager
-async function initializeS3() {
-    try {
-        const credentials = await getAWSCredentials();
+// // Initialize S3 client with credentials from Secrets Manager
+// async function initializeS3() {
+//     try {
+//         const credentials = await getAWSCredentials();
         
-        const S3 = new AWS.S3({
-            accessKeyId: credentials.accessKeyId,
-            secretAccessKey: credentials.secretAccessKey,
-            sessionToken: credentials.sessionToken,
-            region: 'us-east-1',
-            logger: console,
-        });
+//         const S3 = new AWS.S3({
+//             accessKeyId: credentials.accessKeyId,
+//             secretAccessKey: credentials.secretAccessKey,
+//             sessionToken: credentials.sessionToken,
+//             region: 'us-east-1',
+//             logger: console,
+//         });
 
-        console.log('Successfully initialized S3 client');
-        return S3;
-    } catch (error) {
-        console.error('Error initializing S3 client:', error.message);
-        throw error; // Re-throw error for proper error handling
-    }
-}
+//         console.log('Successfully initialized S3 client');
+//         return S3;
+//     } catch (error) {
+//         console.error('Error initializing S3 client:', error.message);
+//         throw error; // Re-throw error for proper error handling
+//     }
+// }
 
 // Initialize S3 client and test it
-(async () => {
-    try {
-        const S3 = await initializeS3(); // Ensure S3 client is configured before using it
+// (async () => {
+//     try {
+//         const S3 = await initializeS3(); // Ensure S3 client is configured before using it
 
-        // Test S3 client by listing buckets
-        const data = await S3.listBuckets().promise();
-        console.log('Buckets:', data.Buckets);
-    } catch (error) {
-        console.error('Error initializing or using S3 client:', error.message);
-    }
-})();
+//         // Test S3 client by listing buckets
+//         const data = await S3.listBuckets().promise();
+//         console.log('Buckets:', data.Buckets);
+//     } catch (error) {
+//         console.error('Error initializing or using S3 client:', error.message);
+//     }
+// })();
+
+import AWS from 'aws-sdk';
+
+const S3 = new AWS.S3({
+  accessKeyId: "ASIAQL6BZ5JNBR7RUYXS",
+  secretAccessKey: "dXAHdwvpZMSv9R+UlmJxDQOlAYsOt25OaFPyQ9As",
+  sessionToken: "IQoJb3JpZ2luX2VjEN3//////////wEaCXVzLXdlc3QtMiJIMEYCIQDuE7ixUif4lgeTZ2r4wehG+/MmEUIiqo1n+O88/mvKPgIhAI253U80zuIhzMvEL9YRlRt4m1YphvHNtPABTYn8RHYlKrACCMX//////////wEQABoMMDI1NjM5MzgxNTk0IgwgQFZDnCFMWIKHnUYqhAJ5Hllh2LVyRAlVWvkaS8ugC9SdQUSVCwY4us6NJINbXfmQtsDz1rq6uhacDLtXRORyHf6xHNvlQTmzk3vk1/gBQ2U27eChEqk8vUipI3nN2MLeX1b+esaoTvKKKR2Jfz2t6b/x9SJE7nXi7zAEuUlLFGvCkgO15/I6QyycPEL93NTr84lMk/V4v8JWPpTLRzsO9BknCi11I3/CJlPIHjkSCQgmBQDgtQExurOZbe19ZqFGSf7wCpSxsMwgNxSkNyui1od0aogOGXj9jReBFxdtKnyO8DqJMysso0t6guD8eTPZZVH0seS1eOlVZ/jHC68WhCs0SpZp4eOQXpeHp4vRSgHDWDDLxL+1BjqcAR25WSKj3K2XdD5JNPrO7SrZpEYOLcE3jzbjxzpx9h6q5XznVIQyFfEOKYMkqiM1x719tBx160M1q3s+rf8c6CWTcFgLYhQyRINkfotVa5G0tv2DLumkAaicSAIy0Z0wBGIF2qol+1Sr7gIwk2z4Ycx82rqE5A2BpkK2HkDhxv5THUe+1T1+5O9CNc1uKcoMejEq3Xo2QRxh3p+Tbg=="
+});
+
+export default S3;

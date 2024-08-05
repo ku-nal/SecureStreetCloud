@@ -23,3 +23,23 @@ const uploadFile = async (fileName, bucketName, fileContent) => {
 };
 
 export default uploadFile;
+
+// import axios from 'axios';
+
+// const uploadFile = async (fileName, bucketName, fileContent) => {
+//   const payload = {
+//     fileName,
+//     bucketName,
+//     fileContent: fileContent.toString('base64'), // Convert file content to base64
+//   };
+
+//   try {
+//     const response = await axios.post('', payload);
+//     return response.data.Location;
+//   } catch (error) {
+//     console.error('Error uploading file:', error);
+//     throw error;
+//   }
+// };
+
+// export default uploadFile;
