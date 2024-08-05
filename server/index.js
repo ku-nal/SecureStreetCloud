@@ -7,7 +7,14 @@ const cors = require('cors');
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: 'http://34.239.138.210:3000', // Your React app's URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));
+
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(bodyParser.json({ limit: "50mb" }));
 
