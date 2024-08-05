@@ -1,4 +1,4 @@
-const URL = "http://10.0.139.217:7000";
+const URL = "http://34.239.138.210";
 const AWS_URL = "https://tqccfllk4e.execute-api.us-east-1.amazonaws.com/v1"
 module.exports = {
     URL,
