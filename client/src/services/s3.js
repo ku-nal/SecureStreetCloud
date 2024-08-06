@@ -130,12 +130,50 @@
 //     }
 // })();
 
+// import AWS from 'aws-sdk';
+
+// const S3 = new AWS.S3({
+//   accessKeyId: "ASIAQL6BZ5JNBR7RUYXS",
+//   secretAccessKey: "dXAHdwvpZMSv9R+UlmJxDQOlAYsOt25OaFPyQ9As",
+//   sessionToken: "IQoJb3JpZ2luX2VjEN3//////////wEaCXVzLXdlc3QtMiJIMEYCIQDuE7ixUif4lgeTZ2r4wehG+/MmEUIiqo1n+O88/mvKPgIhAI253U80zuIhzMvEL9YRlRt4m1YphvHNtPABTYn8RHYlKrACCMX//////////wEQABoMMDI1NjM5MzgxNTk0IgwgQFZDnCFMWIKHnUYqhAJ5Hllh2LVyRAlVWvkaS8ugC9SdQUSVCwY4us6NJINbXfmQtsDz1rq6uhacDLtXRORyHf6xHNvlQTmzk3vk1/gBQ2U27eChEqk8vUipI3nN2MLeX1b+esaoTvKKKR2Jfz2t6b/x9SJE7nXi7zAEuUlLFGvCkgO15/I6QyycPEL93NTr84lMk/V4v8JWPpTLRzsO9BknCi11I3/CJlPIHjkSCQgmBQDgtQExurOZbe19ZqFGSf7wCpSxsMwgNxSkNyui1od0aogOGXj9jReBFxdtKnyO8DqJMysso0t6guD8eTPZZVH0seS1eOlVZ/jHC68WhCs0SpZp4eOQXpeHp4vRSgHDWDDLxL+1BjqcAR25WSKj3K2XdD5JNPrO7SrZpEYOLcE3jzbjxzpx9h6q5XznVIQyFfEOKYMkqiM1x719tBx160M1q3s+rf8c6CWTcFgLYhQyRINkfotVa5G0tv2DLumkAaicSAIy0Z0wBGIF2qol+1Sr7gIwk2z4Ycx82rqE5A2BpkK2HkDhxv5THUe+1T1+5O9CNc1uKcoMejEq3Xo2QRxh3p+Tbg=="
+// });
+
+// export default S3;
+
 import AWS from 'aws-sdk';
 
-const S3 = new AWS.S3({
-  accessKeyId: "ASIAQL6BZ5JNBR7RUYXS",
-  secretAccessKey: "dXAHdwvpZMSv9R+UlmJxDQOlAYsOt25OaFPyQ9As",
-  sessionToken: "IQoJb3JpZ2luX2VjEN3//////////wEaCXVzLXdlc3QtMiJIMEYCIQDuE7ixUif4lgeTZ2r4wehG+/MmEUIiqo1n+O88/mvKPgIhAI253U80zuIhzMvEL9YRlRt4m1YphvHNtPABTYn8RHYlKrACCMX//////////wEQABoMMDI1NjM5MzgxNTk0IgwgQFZDnCFMWIKHnUYqhAJ5Hllh2LVyRAlVWvkaS8ugC9SdQUSVCwY4us6NJINbXfmQtsDz1rq6uhacDLtXRORyHf6xHNvlQTmzk3vk1/gBQ2U27eChEqk8vUipI3nN2MLeX1b+esaoTvKKKR2Jfz2t6b/x9SJE7nXi7zAEuUlLFGvCkgO15/I6QyycPEL93NTr84lMk/V4v8JWPpTLRzsO9BknCi11I3/CJlPIHjkSCQgmBQDgtQExurOZbe19ZqFGSf7wCpSxsMwgNxSkNyui1od0aogOGXj9jReBFxdtKnyO8DqJMysso0t6guD8eTPZZVH0seS1eOlVZ/jHC68WhCs0SpZp4eOQXpeHp4vRSgHDWDDLxL+1BjqcAR25WSKj3K2XdD5JNPrO7SrZpEYOLcE3jzbjxzpx9h6q5XznVIQyFfEOKYMkqiM1x719tBx160M1q3s+rf8c6CWTcFgLYhQyRINkfotVa5G0tv2DLumkAaicSAIy0Z0wBGIF2qol+1Sr7gIwk2z4Ycx82rqE5A2BpkK2HkDhxv5THUe+1T1+5O9CNc1uKcoMejEq3Xo2QRxh3p+Tbg=="
-});
+// Create a Secrets Manager client
+const secretsManager = new AWS.SecretsManager({ region: 'us-east-1' }); // Replace with your region
 
-export default S3;
+async function getSecretValue(secretName) {
+  try {
+    const data = await secretsManager.getSecretValue({ SecretId: secretName }).promise();
+    if ('SecretString' in data) {
+      return JSON.parse(data.SecretString);
+    } else {
+      const buff = Buffer.from(data.SecretBinary, 'base64');
+      return JSON.parse(buff.toString('ascii'));
+    }
+  } catch (err) {
+    console.error('Error retrieving secret:', err);
+    throw err;
+  }
+}
+
+const createS3Client = async () => {
+  try {
+    const secretName = 'my/secret'; // Replace with your secret name
+    const secret = await getSecretValue(secretName);
+
+    return new AWS.S3({
+      accessKeyId: secret.accessKeyId,
+      secretAccessKey: secret.secretAccessKey,
+      sessionToken: secret.sessionToken, // Optional
+    });
+  } catch (err) {
+    console.error('Error configuring S3 client:', err);
+    throw err;
+  }
+};
+
+export default createS3Client;

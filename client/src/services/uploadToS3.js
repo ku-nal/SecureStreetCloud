@@ -1,15 +1,15 @@
-import S3 from './s3';
+import createS3Client from './s3';
 
 const uploadFile = async (fileName, bucketName, fileContent) => {
+  const S3 = await createS3Client();
+
+  const params = {
+    Bucket: bucketName,
+    Key: fileName,
+    Body: fileContent,
+  };
+
   return new Promise((resolve, reject) => {
-    const params = {
-      Bucket: "crimeb00961220",
-      Key: fileName,
-      Body: fileContent,
-    };
-
-    console.log(S3);
-
     S3.upload(params, (err, data) => {
       if (err) {
         console.error("Error uploading file:", err);
@@ -23,6 +23,33 @@ const uploadFile = async (fileName, bucketName, fileContent) => {
 };
 
 export default uploadFile;
+
+
+// import S3 from './s3';
+
+// const uploadFile = async (fileName, bucketName, fileContent) => {
+//   return new Promise((resolve, reject) => {
+//     const params = {
+//       Bucket: "crimeb00961220",
+//       Key: fileName,
+//       Body: fileContent,
+//     };
+
+//     console.log(S3);
+
+//     S3.upload(params, (err, data) => {
+//       if (err) {
+//         console.error("Error uploading file:", err);
+//         reject(err);
+//       } else {
+//         console.log(`File uploaded successfully. ${data.Location}`);
+//         resolve(params.Key);
+//       }
+//     });
+//   });
+// };
+
+// export default uploadFile;
 
 // import axios from 'axios';
 
