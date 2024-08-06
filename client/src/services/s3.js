@@ -162,7 +162,7 @@ async function getSecretValue(secretName) {
 
 const createS3Client = async () => {
   try {
-    const secretName = 'my/secret'; // Replace with your secret name
+    const secretName = 'crimemanagement/secret'; // Replace with your secret name
     const secret = await getSecretValue(secretName);
 
     return new AWS.S3({
