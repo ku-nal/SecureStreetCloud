@@ -203,9 +203,7 @@ async function getAWSCredentials() {
     };
 
     try {
-        console.log('Attempting to retrieve secrets from AWS Secrets Manager...');
         const secret = await secretsManager.getSecretValue(params).promise();
-        console.log('Successfully retrieved secrets:', secret);
         return JSON.parse(secret.SecretString);
     } catch (error) {
         console.error('Failed to retrieve AWS credentials:', error.message);
@@ -216,7 +214,6 @@ async function getAWSCredentials() {
 // Initialize AWS SDK
 async function initializeAWS() {
     try {
-        console.log('Initializing AWS SDK...');
         const credentials = await getAWSCredentials();
 
         AWS.config.update({
@@ -227,7 +224,6 @@ async function initializeAWS() {
             logger: console,
         });
 
-        console.log('AWS SDK initialized successfully');
         return new AWS.DynamoDB.DocumentClient(); // Return the initialized client
     } catch (error) {
         console.error('Error initializing AWS SDK:', error.message);
@@ -240,21 +236,16 @@ let dynamoDb;
 
 (async () => {
     try {
-        console.log('Initializing DynamoDB client...');
         dynamoDb = await initializeAWS(); // Ensure AWS SDK is configured before using it
-        console.log('DynamoDB client initialized successfully');
     } catch (error) {
-        console.error('Error initializing DynamoDB client:', error.message);
+        console.error('Error initializing AWS SDK:', error.message);
         process.exit(1); // Exit process if AWS initialization fails
     }
 })();
 
 // Create a criminal entry
 async function createCriminal(req, res) {
-    console.log("Calling Initialize AWS");
-    dynamoDb = await initializeAWS();
     if (!dynamoDb) {
-        console.error('DynamoDB client not initialized');
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             error: 'DynamoDB client not initialized'
@@ -264,7 +255,7 @@ async function createCriminal(req, res) {
     try {
         const { name, age, nationality, gender, objectKey } = req.body;
 
-        console.log('Creating criminal entry with data:', req.body);
+        console.log("Creating criminal entry:", req.body);
         const params = {
             TableName: 'Criminals',
             Item: {
@@ -278,11 +269,11 @@ async function createCriminal(req, res) {
             }
         };
 
-        console.log('Parameters for DynamoDB put operation:', params);
+        console.log("Parameters for DynamoDB put:", params);
 
         await dynamoDb.put(params).promise();
 
-        SuccessResponse.message = 'Successfully inserted the criminal';
+        SuccessResponse.message = "Successfully inserted the criminal";
         SuccessResponse.data = params.Item;
 
         return res.status(StatusCodes.OK).json(SuccessResponse);
@@ -296,7 +287,6 @@ async function createCriminal(req, res) {
 // Retrieve a criminal by object key
 async function getCriminalByObjKey(req, res) {
     if (!dynamoDb) {
-        console.error('DynamoDB client not initialized');
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             error: 'DynamoDB client not initialized'
@@ -306,7 +296,6 @@ async function getCriminalByObjKey(req, res) {
     try {
         const { objectKey } = req.query;
 
-        console.log('Retrieving criminal by object key:', objectKey);
         const params = {
             TableName: 'Criminals',
             FilterExpression: 'objectKey = :objectKey',
@@ -317,14 +306,12 @@ async function getCriminalByObjKey(req, res) {
 
         const data = await dynamoDb.scan(params).promise();
 
-        console.log('DynamoDB scan result:', data);
-
         if (data.Items.length === 0) {
-            ErrorResponse.error = 'No criminal found with that object key';
+            ErrorResponse.error = "No criminal found with that object key";
             return res.status(StatusCodes.NOT_FOUND).json(ErrorResponse);
         }
 
-        SuccessResponse.message = 'Successfully fetched the criminal';
+        SuccessResponse.message = "Successfully fetched the criminal";
         SuccessResponse.data = data.Items[0];
 
         return res.status(StatusCodes.OK).json(SuccessResponse);
@@ -338,7 +325,6 @@ async function getCriminalByObjKey(req, res) {
 // Retrieve a criminal by ID
 async function getCriminalById(req, res) {
     if (!dynamoDb) {
-        console.error('DynamoDB client not initialized');
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             error: 'DynamoDB client not initialized'
@@ -348,7 +334,6 @@ async function getCriminalById(req, res) {
     try {
         const { id } = req.params;
 
-        console.log('Retrieving criminal by ID:', id);
         const params = {
             TableName: 'Criminals',
             Key: {
@@ -358,14 +343,12 @@ async function getCriminalById(req, res) {
 
         const data = await dynamoDb.get(params).promise();
 
-        console.log('DynamoDB get result:', data);
-
         if (!data.Item) {
-            ErrorResponse.error = 'No criminal found with that ID';
+            ErrorResponse.error = "No criminal found with that ID";
             return res.status(StatusCodes.NOT_FOUND).json(ErrorResponse);
         }
 
-        SuccessResponse.message = 'Successfully fetched the criminal';
+        SuccessResponse.message = "Successfully fetched the criminal";
         SuccessResponse.data = data.Item;
 
         return res.status(StatusCodes.OK).json(SuccessResponse);
@@ -381,7 +364,6 @@ module.exports = {
     getCriminalByObjKey,
     getCriminalById
 };
-
 
 // const AWS = require('aws-sdk');
 // const StatusCodes = require('http-status-codes');
