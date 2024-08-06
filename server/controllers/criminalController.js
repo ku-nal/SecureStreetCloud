@@ -251,6 +251,8 @@ let dynamoDb;
 
 // Create a criminal entry
 async function createCriminal(req, res) {
+    console.log("Calling Initialize AWS");
+    dynamoDb = await initializeAWS();
     if (!dynamoDb) {
         console.error('DynamoDB client not initialized');
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
