@@ -130,50 +130,50 @@
 //     }
 // })();
 
-// import AWS from 'aws-sdk';
-
-// const S3 = new AWS.S3({
-//   accessKeyId: "ASIAQL6BZ5JNBR7RUYXS",
-//   secretAccessKey: "dXAHdwvpZMSv9R+UlmJxDQOlAYsOt25OaFPyQ9As",
-//   sessionToken: "IQoJb3JpZ2luX2VjEN3//////////wEaCXVzLXdlc3QtMiJIMEYCIQDuE7ixUif4lgeTZ2r4wehG+/MmEUIiqo1n+O88/mvKPgIhAI253U80zuIhzMvEL9YRlRt4m1YphvHNtPABTYn8RHYlKrACCMX//////////wEQABoMMDI1NjM5MzgxNTk0IgwgQFZDnCFMWIKHnUYqhAJ5Hllh2LVyRAlVWvkaS8ugC9SdQUSVCwY4us6NJINbXfmQtsDz1rq6uhacDLtXRORyHf6xHNvlQTmzk3vk1/gBQ2U27eChEqk8vUipI3nN2MLeX1b+esaoTvKKKR2Jfz2t6b/x9SJE7nXi7zAEuUlLFGvCkgO15/I6QyycPEL93NTr84lMk/V4v8JWPpTLRzsO9BknCi11I3/CJlPIHjkSCQgmBQDgtQExurOZbe19ZqFGSf7wCpSxsMwgNxSkNyui1od0aogOGXj9jReBFxdtKnyO8DqJMysso0t6guD8eTPZZVH0seS1eOlVZ/jHC68WhCs0SpZp4eOQXpeHp4vRSgHDWDDLxL+1BjqcAR25WSKj3K2XdD5JNPrO7SrZpEYOLcE3jzbjxzpx9h6q5XznVIQyFfEOKYMkqiM1x719tBx160M1q3s+rf8c6CWTcFgLYhQyRINkfotVa5G0tv2DLumkAaicSAIy0Z0wBGIF2qol+1Sr7gIwk2z4Ycx82rqE5A2BpkK2HkDhxv5THUe+1T1+5O9CNc1uKcoMejEq3Xo2QRxh3p+Tbg=="
-// });
-
-// export default S3;
-
 import AWS from 'aws-sdk';
 
-// Create a Secrets Manager client
-const secretsManager = new AWS.SecretsManager({ region: 'us-east-1' }); // Replace with your region
+const S3 = new AWS.S3({
+  accessKeyId: "ASIAQL6BZ5JNLMRNFM2P",
+  secretAccessKey: "3vfqtRrBVjyjOAtkSa5dSiHtP6mHt1Xlnx97ErMJ",
+  sessionToken: "IQoJb3JpZ2luX2VjEAUaCXVzLXdlc3QtMiJHMEUCIAxYjHfiqjBN4TqZL0W1l4JZnOvFCaoEiG8KEmXILPEbAiEA0/ao/KxIYGjqrWxutKBCYIpmF65RuBceVaYqVk0hpQUqsAII7v//////////ARAAGgwwMjU2MzkzODE1OTQiDLQZ5jnmcXq//YNlLCqEAnfHIe78BVNvvog+yT2JcD1A5WXEdBRmND/H09nrLXj5Zu06PVrxEUoCmr7Vo07bB8GE86pKlT75kdUCKXB8og8s3DaZKRBjeiDCFzJHFsE0O1QnxpUne4uDVrGbMiyGbaND4FDSLqISmUhmdfgqYcimtJ368/HeemSs4ZqhpbOGIaHNEFbFkLdRXNcHJiw04gkWGcMUqnV57gk2WWc6wSCYPFCvE3n2RwDvRi4SX6Zd2jdoe+I3eeRhObxwMBI+PC1SL+e3+7/Ale5aTPVZZZGelWLKHhTPSwNoPnTHgnez18emrewaL0LBbMbU1BW/fJ3RRx9rLo7QUrRWoNXvSN63fZUbMPeuyLUGOp0BheP2kc4dAuWKAjHbGOjKFQQqvOervJxRJeZrgiGhEeaOXIef3YuWzlmjknRffrzrE1io3XIw0ZseUImOVmfGd+pILvtu2nWBWXzp8qck5iZxKicysSWe4p2pT9JHg0psX2NDBkl0UhreXwzZG9VaQ3lKOaaNY7Y1fW8ghIathKh6BhiO89LGuQCavDMXS7NPhjxTSah75WOo5hVOPA=="
+});
 
-async function getSecretValue(secretName) {
-  try {
-    const data = await secretsManager.getSecretValue({ SecretId: secretName }).promise();
-    if ('SecretString' in data) {
-      return JSON.parse(data.SecretString);
-    } else {
-      const buff = Buffer.from(data.SecretBinary, 'base64');
-      return JSON.parse(buff.toString('ascii'));
-    }
-  } catch (err) {
-    console.error('Error retrieving secret:', err);
-    throw err;
-  }
-}
+export default S3;
 
-const createS3Client = async () => {
-  try {
-    const secretName = 'crimemanagement/secret'; // Replace with your secret name
-    const secret = await getSecretValue(secretName);
+// import AWS from 'aws-sdk';
 
-    return new AWS.S3({
-      accessKeyId: secret.accessKeyId,
-      secretAccessKey: secret.secretAccessKey,
-      sessionToken: secret.sessionToken, // Optional
-    });
-  } catch (err) {
-    console.error('Error configuring S3 client:', err);
-    throw err;
-  }
-};
+// // Create a Secrets Manager client
+// const secretsManager = new AWS.SecretsManager({ region: 'us-east-1' }); // Replace with your region
 
-export default createS3Client;
+// async function getSecretValue(secretName) {
+//   try {
+//     const data = await secretsManager.getSecretValue({ SecretId: secretName }).promise();
+//     if ('SecretString' in data) {
+//       return JSON.parse(data.SecretString);
+//     } else {
+//       const buff = Buffer.from(data.SecretBinary, 'base64');
+//       return JSON.parse(buff.toString('ascii'));
+//     }
+//   } catch (err) {
+//     console.error('Error retrieving secret:', err);
+//     throw err;
+//   }
+// }
+
+// const createS3Client = async () => {
+//   try {
+//     const secretName = 'crimemanagement/secret'; // Replace with your secret name
+//     const secret = await getSecretValue(secretName);
+
+//     return new AWS.S3({
+//       accessKeyId: secret.accessKeyId,
+//       secretAccessKey: secret.secretAccessKey,
+//       sessionToken: secret.sessionToken, // Optional
+//     });
+//   } catch (err) {
+//     console.error('Error configuring S3 client:', err);
+//     throw err;
+//   }
+// };
+
+// export default createS3Client;
