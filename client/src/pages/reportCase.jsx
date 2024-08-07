@@ -55,10 +55,11 @@ const ReportCase = () => {
         console.log("Face matched");
         const matchedObj = response.data.body.objectKey;
         console.log("Matched obj", matchedObj);
-        console.log(URL);
-        const resp = await axios.get(URL+"/criminal/objkey", {
-          params: { objectKey: matchedObj },
-        });
+        console.log(AWS_URL);
+        const objectPayload = {
+          objectKey: matchedObj
+        };
+        const resp = await axios.get(AWS_URL+"/criminal/objkey", objectPayload);
         const criminalDetails = resp.data.data;
 
         setCriminalName(criminalDetails.name);
@@ -127,7 +128,7 @@ const ReportCase = () => {
         objectKey: currObjKey
       };
   
-      const response = await axios.post(URL+"/criminal/create", criminalPayload);
+      const response = await axios.post(AWS_URL+"/criminal/create", criminalPayload);
       console.log(response.data);
       console.log("Criminal ID", response.data.data.criminalId);
   
@@ -152,7 +153,7 @@ const ReportCase = () => {
       };
     }
       console.log(reportPayload);  
-      const reportResponse = await axios.post(URL+"/report/create", reportPayload);
+      const reportResponse = await axios.post(AWS_URL+"/createReport", reportPayload);
       console.log("Received response from create report : ", reportResponse);
   
       toast.success("Successfully reported the case");
