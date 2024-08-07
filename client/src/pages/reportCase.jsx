@@ -41,7 +41,7 @@ const ReportCase = () => {
     console.log("Location : ", location);
     if (location) {
       const payload = {
-        bucket_name: "crimeb00961220",
+        bucket_name: "crimeb00961220cloud",
         object_key: location,
       };
       console.log("Payload", payload);
@@ -96,7 +96,7 @@ const ReportCase = () => {
     );
 
     const payload = {
-      bucket_name: "crimeb00961220",
+      bucket_name: "crimeb00961220cloud",
       object_key: location,
     };
 
