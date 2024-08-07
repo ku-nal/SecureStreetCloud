@@ -32,12 +32,15 @@ const ReportCase = () => {
   const handlePhotoChange = async (e) => {
     const file = e.target.files[0];
     const fileName = uuid();
+    const location = "Test/"+fileName;
     console.log(fileName);
-    const location = await uploadFile(
-      "Test/" + fileName,
-      "crime-management-cloud",
+    const response = await uploadFile(
+      location,
+      "crimeb00961220cloud",
       file
     );
+
+    console.log("Response", response);
     console.log("Location : ", location);
     if (location) {
       const payload = {
@@ -74,9 +77,10 @@ const ReportCase = () => {
         console.log("Face doesn't match in the database");
         setImageMatched(false);
 
-        const finalLocation = await uploadFile(
-            "Criminal-Photos/" + fileName,
-            "crime-management-cloud",
+        const finalLocation = "Criminal-Photos/" + fileName;
+        const response = await uploadFile(
+            finalLocation,
+            "crimeb00961220cloud",
             file
         );
         setCurrObjKey(finalLocation);
@@ -89,9 +93,10 @@ const ReportCase = () => {
     const file = e.target.files[0];
     const fileName = uuid();
 
-    const location = await uploadFile(
-      "Crime-Reports/" + fileName,
-      "crime-management-cloud",
+    const location = "Crime-Reports/" + fileName;
+    const uploadResponse = await uploadFile(
+      location,
+      "crimeb00961220cloud",
       file
     );
 
