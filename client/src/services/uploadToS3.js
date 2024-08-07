@@ -3,7 +3,7 @@ import S3 from './s3';
 const uploadFile = async (fileName, bucketName, fileContent) => {
   return new Promise((resolve, reject) => {
     const params = {
-      Bucket: "crimeb00961220",
+      Bucket: "crimeb00961220cloud",
       Key: fileName,
       Body: fileContent,
     };
