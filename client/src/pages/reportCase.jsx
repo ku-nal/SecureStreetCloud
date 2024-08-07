@@ -62,7 +62,7 @@ const ReportCase = () => {
         const objectPayload = {
           objectKey: matchedObj
         };
-        const resp = await axios.get(AWS_URL+"/criminal/objkey", objectPayload);
+        const resp = await axios.post(AWS_URL+"/criminal/objkey", objectPayload);
         const criminalDetails = resp.data.data;
 
         setCriminalName(criminalDetails.name);
